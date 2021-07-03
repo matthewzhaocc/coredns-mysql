@@ -2,6 +2,7 @@ package corednsmysql
 
 import (
 	"context"
+	"fmt"
 	"github.com/coredns/coredns/plugin"
 
 	"github.com/miekg/dns"
@@ -24,10 +25,10 @@ func (r *ResponsePrinter) WriteMsg(res *dns.Msg) error {
 }
 
 func (resolver DnsResolver) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) (int, error){
-	// pw := NewResponsePrinter(w)
+	pw := NewResponsePrinter(w)
 
-
-	return 1, nil
+	fmt.Println("xd")
+	return plugin.NextOrFailure(resolver.Name(), resolver.Next, ctx, pw, r)
 }
 
 func (resolver DnsResolver) Name() string {
